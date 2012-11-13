@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	
+	<groupId>pl.kwi</groupId>
+	<artifactId>HwFstServletsEjb3_pom</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>	
+	<modelVersion>4.0.0</modelVersion>
+	<name>${artifactId}</name>
+	
+
+	<modules>
+		<module>../HwFstServletsEjb3_ejb</module>
+		<module>../HwFstServletsEjb3_web</module>
+		<module>../HwFstServletsEjb3_ear</module>
+	</modules>
+	
+
+</project>
