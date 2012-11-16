@@ -10,10 +10,10 @@
 	<package name="init" namespace="/" extends="struts-default">
 	
 		<interceptors>
-			<interceptor name="userInterceptor" class="pl.kwi.interceptors.UserInterceptor"/>
+			<interceptor name="helloInterceptor" class="pl.kwi.interceptors.HelloInterceptor"/>
 
-			<interceptor-stack name="userStack">
-			    <interceptor-ref name="userInterceptor"/>
+			<interceptor-stack name="helloInterceptorStack">
+			    <interceptor-ref name="helloInterceptor"/>
 			    <!-- Can not forget about default interceptor -->
 			    <interceptor-ref name="defaultStack" />
 			</interceptor-stack>
@@ -24,7 +24,7 @@
 		</action>
 		
 		<action name="hello" class="pl.kwi.actions.HelloAction" method="handleOkButton">
-			<interceptor-ref name="userStack"></interceptor-ref>
+			<interceptor-ref name="helloInterceptorStack"></interceptor-ref>
 			<result name="SUCCESS">jsp/welcomeJsp.jsp</result>
 		</action>
 		
