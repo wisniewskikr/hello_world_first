@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp spec="1.0+"
+      codebase="http://localhost:8080/HwFstWebStart/" 
+      href="web-start.jnlp">
+   <information>
+      <title>Hello World Web Start Demo</title>
+      <vendor>kwisniewski</vendor>
+      <description>Hello World Web Start Demo</description>
+      <homepage href="http://localhost:8080/HwFstWebStart/index.jsp"/>      
+      <offline-allowed/>
+   </information>
+   <security>
+      <all-permissions/>
+   </security>
+   <resources>     
+   	<jar href="HwFstSwing.jar"/>
+   	<j2se version="1.2+"/>   		
+   </resources>
+   <application-desc main-class="pl.kwisniewski.main.Main"/>
+</jnlp>
