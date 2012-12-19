@@ -1,0 +1,44 @@
+version: 1
+
+dn: dc=kwi,dc=pl
+objectClass: domain
+objectClass: top
+dc: kwi
+
+# Admins group
+dn: ou=admins,dc=kwi,dc=pl
+ou: Groups
+description: Admins
+objectClass: top
+objectClass: organizationalUnit
+
+# Users group
+dn: ou=users,dc=kwi,dc=pl
+ou: Groups
+description: users
+objectClass: top
+objectClass: organizationalUnit
+
+# John
+dn: uid=1,ou=admins,dc=kwi,dc=pl
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+uid: 1
+cn: John
+sn: John-Vorname
+userPassword: password
+mail: john@gmail.com
+
+# Bill
+dn: uid=2,ou=users,dc=kwi,dc=pl
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+uid: 2
+cn: Bill
+sn: Bill-Vorname
+userPassword: password
+mail: bill@gmail.com
