@@ -20,15 +20,16 @@ public class MailService {
 	
 	
 	// Sending mail
-	private static String MAIL_SMTP_HOST;
-	private static String MAIL_SMTP_PORT;
-	private static String MAIL_SMTP_USER;
-	private static String MAIL_SMTP_PASSWORD;
+	private static String MAIL_SENDING_HOST;
+	private static String MAIL_SENDING_PORT;
+	private static String MAIL_SENDING_USER;
+	private static String MAIL_SENDING_PASSWORD;
 	
 	// Receiving mail
-	private static String MAIL_POP3_HOST;
-	private static String MAIL_POP3_USER;
-	private static String MAIL_POP3_PASSWORD;
+	private static String MAIL_RECEIVING_HOST;
+	private static String MAIL_RECEIVING_PROTOCOL;
+	private static String MAIL_RECEIVING_USER;
+	private static String MAIL_RECEIVING_PASSWORD;
 	
 	// Mail content
 	public static String MAIL_FROM;
@@ -43,14 +44,15 @@ public class MailService {
 			Properties prop = new Properties();
 			prop.load(MailService.class.getResourceAsStream("/project.properties"));
 			
-			MAIL_SMTP_HOST = prop.getProperty("mail.smtp.host");
-			MAIL_SMTP_PORT = prop.getProperty("mail.smtp.port");
-			MAIL_SMTP_USER = prop.getProperty("mail.smtp.user");
-			MAIL_SMTP_PASSWORD = prop.getProperty("mail.smtp.password");
+			MAIL_SENDING_HOST = prop.getProperty("mail.sending.host");
+			MAIL_SENDING_PORT = prop.getProperty("mail.sending.port");
+			MAIL_SENDING_USER = prop.getProperty("mail.sending.user");
+			MAIL_SENDING_PASSWORD = prop.getProperty("mail.sending.password");
 			
-			MAIL_POP3_HOST = prop.getProperty("mail.pop3.host");
-			MAIL_POP3_USER = prop.getProperty("mail.pop3.user");
-			MAIL_POP3_PASSWORD = prop.getProperty("mail.pop3.password");
+			MAIL_RECEIVING_HOST = prop.getProperty("mail.receiving.host");
+			MAIL_RECEIVING_PROTOCOL = prop.getProperty("mail.receiving.protocol");
+			MAIL_RECEIVING_USER = prop.getProperty("mail.receiving.user");
+			MAIL_RECEIVING_PASSWORD = prop.getProperty("mail.receiving.password");
 			
 			MAIL_FROM = prop.getProperty("mail.from");
 			MAIL_TO = prop.getProperty("mail.to");
@@ -66,7 +68,7 @@ public class MailService {
     	
 		try {
 				 
-				Session session = getSessionSMTP();			
+				Session session = getSendingSession();			
 	 
 				Message message = new MimeMessage(session);
 				message.setFrom(new InternetAddress(from));
@@ -89,10 +91,10 @@ public class MailService {
     	
     	try {
     		
-    	  Session session = getSessionPOP3();
+    	  Session session = getReceivingSession();
     	  
     	  Store store = session.getStore();
-    	  store.connect(MAIL_POP3_HOST, MAIL_POP3_USER, MAIL_POP3_PASSWORD);
+    	  store.connect(MAIL_RECEIVING_HOST, MAIL_RECEIVING_USER, MAIL_RECEIVING_PASSWORD);
     	  Folder folder=store.getFolder("INBOX");
     	  folder.open(Folder.READ_ONLY);
     	  
@@ -134,11 +136,11 @@ public class MailService {
 	// ************************************************************************************************************ //
     
     
-    private Session getSessionSMTP(){
+    private Session getSendingSession(){
     	
     	Properties props = new Properties();
-    	props.put("mail.smtp.host", MAIL_SMTP_HOST);
-    	props.put("mail.smtp.port", MAIL_SMTP_PORT);
+    	props.put("mail.smtp.host", MAIL_SENDING_HOST);
+    	props.put("mail.smtp.port", MAIL_SENDING_PORT);
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
  
@@ -146,7 +148,7 @@ public class MailService {
 		  new javax.mail.Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(MAIL_SMTP_USER, MAIL_SMTP_PASSWORD);
+				return new PasswordAuthentication(MAIL_SENDING_USER, MAIL_SENDING_PASSWORD);
 			}
 		  });
 		
@@ -154,10 +156,10 @@ public class MailService {
     	
     }
     
-    private Session getSessionPOP3(){
+    private Session getReceivingSession(){
     	
     	Properties props = System.getProperties();
-    	props.setProperty("mail.store.protocol", "pop3s");
+    	props.setProperty("mail.store.protocol", MAIL_RECEIVING_PROTOCOL);
     	return Session.getDefaultInstance(props, null);
     	
     }

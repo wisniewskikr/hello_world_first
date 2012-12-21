@@ -20,15 +20,17 @@ public class MailService {
 	
 	
 	// Sending mail
-	private static String MAIL_SMTP_HOST;
-	private static String MAIL_SMTP_PORT;
-	private static String MAIL_SMTP_USER;
-	private static String MAIL_SMTP_PASSWORD;
+	private static String MAIL_SENDING_HOST;
+	private static String MAIL_SENDING_PORT;
+	private static String MAIL_SENDING_USER;
+	private static String MAIL_SENDING_PASSWORD;
+	private static String MAIL_SENDING_SSH_PORT;
 	
 	// Receiving mail
-	private static String MAIL_IMAP_HOST;
-	private static String MAIL_IMAP_USER;
-	private static String MAIL_IMAP_PASSWORD;
+	private static String MAIL_RECEIVING_HOST;
+	private static String MAIL_RECEIVING_PROTOCOL;
+	private static String MAIL_RECEIVING_USER;
+	private static String MAIL_RECEIVING_PASSWORD;
 	
 	// Mail content
 	public static String MAIL_FROM;
@@ -43,14 +45,17 @@ public class MailService {
 			Properties prop = new Properties();
 			prop.load(MailService.class.getResourceAsStream("/project.properties"));
 			
-			MAIL_SMTP_HOST = prop.getProperty("mail.smtp.host");
-			MAIL_SMTP_PORT = prop.getProperty("mail.smtp.port");
-			MAIL_SMTP_USER = prop.getProperty("mail.smtp.user");
-			MAIL_SMTP_PASSWORD = prop.getProperty("mail.smtp.password");
+			MAIL_SENDING_HOST = prop.getProperty("mail.sending.host");
+			MAIL_SENDING_PORT = prop.getProperty("mail.sending.port");
+			MAIL_SENDING_USER = prop.getProperty("mail.sending.user");
+			MAIL_SENDING_PASSWORD = prop.getProperty("mail.sending.password");
+			// Ssh
+			MAIL_SENDING_SSH_PORT = prop.getProperty("mail.sending.ssh.port");
 			
-			MAIL_IMAP_HOST = prop.getProperty("mail.imap.host");
-			MAIL_IMAP_USER = prop.getProperty("mail.imap.user");
-			MAIL_IMAP_PASSWORD = prop.getProperty("mail.imap.password");
+			MAIL_RECEIVING_HOST = prop.getProperty("mail.receiving.host");
+			MAIL_RECEIVING_PROTOCOL = prop.getProperty("mail.receiving.protocol");
+			MAIL_RECEIVING_USER = prop.getProperty("mail.receiving.user");
+			MAIL_RECEIVING_PASSWORD = prop.getProperty("mail.receiving.password");
 			
 			MAIL_FROM = prop.getProperty("mail.from");
 			MAIL_TO = prop.getProperty("mail.to");
@@ -66,7 +71,7 @@ public class MailService {
     	
 		try {
 				 
-				Session session = getSessionSMTP();			
+				Session session = getSendingSessionSsh();			
 	 
 				Message message = new MimeMessage(session);
 				message.setFrom(new InternetAddress(from));
@@ -89,10 +94,10 @@ public class MailService {
     	
     	try {
     		
-    	  Session session = getSessionIMAPS();
+    	  Session session = getReceivingSession();
     	  
-    	  Store store = session.getStore("imaps");
-    	  store.connect(MAIL_IMAP_HOST, MAIL_IMAP_USER, MAIL_IMAP_PASSWORD);
+    	  Store store = session.getStore();
+    	  store.connect(MAIL_RECEIVING_HOST, MAIL_RECEIVING_USER, MAIL_RECEIVING_PASSWORD);
     	  Folder folder=store.getFolder("INBOX");
     	  folder.open(Folder.READ_ONLY);
     	  
@@ -134,23 +139,23 @@ public class MailService {
 	// ************************************************************************************************************ //
     
     
-    private Session getSessionSMTP(){
+    private Session getSendingSessionSsh(){
     	
     	Properties props = new Properties();
-    	props.put("mail.smtp.host", MAIL_SMTP_HOST);
-    	props.put("mail.smtp.port", MAIL_SMTP_PORT);
+    	props.put("mail.smtp.host", MAIL_SENDING_HOST);
+    	props.put("mail.smtp.port", MAIL_SENDING_PORT);
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		
 		// SSH
-		props.put("mail.smtp.socketFactory.port", MAIL_SMTP_PORT);
+		props.put("mail.smtp.socketFactory.port", MAIL_SENDING_SSH_PORT);
 		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
  
 		Session session = Session.getInstance(props,
 		  new javax.mail.Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(MAIL_SMTP_USER, MAIL_SMTP_PASSWORD);
+				return new PasswordAuthentication(MAIL_SENDING_USER, MAIL_SENDING_PASSWORD);
 			}
 		  });
 		
@@ -158,10 +163,10 @@ public class MailService {
     	
     }
     
-    private Session getSessionIMAPS(){
+    private Session getReceivingSession(){
     	
     	Properties props = System.getProperties();
-    	props.setProperty("mail.store.protocol", "imaps");
+    	props.setProperty("mail.store.protocol", MAIL_RECEIVING_PROTOCOL);
     	return Session.getDefaultInstance(props, null);
     	
     }
