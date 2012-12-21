@@ -4,33 +4,31 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import org.wk.services.FileService;
+import org.wk.services.TextService;
 import org.wk.swing.abstrs.AbstrPanel;
 
-
-public class HelloPanel extends AbstrPanel{
-		
+public class WelcomePanel extends AbstrPanel{
+	
 
 	private static final long serialVersionUID = 1L;
-	private FileService fileService;
-
+	private TextService textService;
 	
-	public HelloPanel(JFrame frame){
+	
+	public WelcomePanel(JFrame frame){
 		super(frame);
-		fileService = new FileService();
+		textService = new TextService();
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.add(getTitlePanel(), BorderLayout.NORTH);
 		this.add(getSubtitlePanel(), BorderLayout.NORTH);
-		this.add(getRequestPanel(), BorderLayout.CENTER);
+		this.add(getResponsePanel(), BorderLayout.CENTER);
+		this.add(getFilePanel(), BorderLayout.CENTER);
 		this.add(getButtonPanel(), BorderLayout.SOUTH);
 		
 		frame.setContentPane(this);	
@@ -49,17 +47,25 @@ public class HelloPanel extends AbstrPanel{
 	private JPanel getSubtitlePanel(){
 		
 		panel = new JPanel();
-		panel.add(new JLabel("Page: Hello"));
+		panel.add(new JLabel("Page: Welcome"));
 		return panel;
 		
 	}
 	
-	private JPanel getRequestPanel(){
+	private JPanel getResponsePanel(){
+		
+		String name = readNameFromFile();		
+		panel = new JPanel();
+		panel.add(new JLabel("Hello World: " + name));
+		return panel;
+		
+	}
+	
+	private JPanel getFilePanel(){
 		
 		panel = new JPanel();
-		panel.add(new JLabel("Type your name: "));
-		textField = new JTextField(10);
-		panel.add(textField);
+		panel.add(new JLabel("Your name is taken from file:"));
+		panel.add(new JLabel(TextService.FILE_PATH + TextService.FILE_NAME));
 		return panel;
 		
 	}
@@ -67,7 +73,7 @@ public class HelloPanel extends AbstrPanel{
 	private JPanel getButtonPanel(){
 		
 		panel = new JPanel();
-		JButton jButtonOK = new JButton("OK");
+		JButton jButtonOK = new JButton("Back");
 		jButtonOK.addActionListener(new ActionListenerButtonOK());
 		panel.add(jButtonOK);
 		return panel;
@@ -77,23 +83,17 @@ public class HelloPanel extends AbstrPanel{
 	private class ActionListenerButtonOK implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
-			
-			String name = textField.getText();
-			writeNameToFile(name);			
-			new WelcomePanel(frame);
-			
+			new HelloPanel(frame);
 		}
 		
 	}
 	
-	private void writeNameToFile(String name){
+	private String readNameFromFile(){
 		
-		String filePath = System.getProperty("java.io.tmpdir");
-		String fileName = "HwFstWriteReadFileSwing.txt";
-		String fileLocation = filePath + fileName;
+		String fileLocation = TextService.FILE_PATH + TextService.FILE_NAME;
 		File file = new File(fileLocation);
-		fileService.writeTextToFile(name, file);
+		return textService.readTextFromFile(file);
 		
 	}
-		
+	
 }

@@ -8,7 +8,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-public class FileService {
+public class TextService {
+	
+	
+	public final static String FILE_PATH = System.getProperty("java.io.tmpdir");
+	public final static String FILE_NAME = "test.txt";
+	
 	
 	public void writeTextToFile(String text, File file){
 		

@@ -10,25 +10,27 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-import org.wk.services.FileService;
+import org.wk.services.TextService;
 import org.wk.swing.abstrs.AbstrPanel;
 
-public class WelcomePanel extends AbstrPanel{
-	
+
+public class HelloPanel extends AbstrPanel{
+		
 
 	private static final long serialVersionUID = 1L;
-	private FileService fileService;
+	private TextService textService;
+
 	
-	
-	public WelcomePanel(JFrame frame){
+	public HelloPanel(JFrame frame){
 		super(frame);
-		fileService = new FileService();
+		textService = new TextService();
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.add(getTitlePanel(), BorderLayout.NORTH);
 		this.add(getSubtitlePanel(), BorderLayout.NORTH);
-		this.add(getResponsePanel(), BorderLayout.CENTER);
+		this.add(getRequestPanel(), BorderLayout.CENTER);
 		this.add(getButtonPanel(), BorderLayout.SOUTH);
 		
 		frame.setContentPane(this);	
@@ -47,16 +49,17 @@ public class WelcomePanel extends AbstrPanel{
 	private JPanel getSubtitlePanel(){
 		
 		panel = new JPanel();
-		panel.add(new JLabel("Page: Welcome"));
+		panel.add(new JLabel("Page: Hello"));
 		return panel;
 		
 	}
 	
-	private JPanel getResponsePanel(){
+	private JPanel getRequestPanel(){
 		
-		String name = readNameFromFile();		
 		panel = new JPanel();
-		panel.add(new JLabel("Hello World: " + name));
+		panel.add(new JLabel("Type your name: "));
+		textField = new JTextField(10);
+		panel.add(textField);
 		return panel;
 		
 	}
@@ -64,7 +67,7 @@ public class WelcomePanel extends AbstrPanel{
 	private JPanel getButtonPanel(){
 		
 		panel = new JPanel();
-		JButton jButtonOK = new JButton("Back");
+		JButton jButtonOK = new JButton("OK");
 		jButtonOK.addActionListener(new ActionListenerButtonOK());
 		panel.add(jButtonOK);
 		return panel;
@@ -74,19 +77,21 @@ public class WelcomePanel extends AbstrPanel{
 	private class ActionListenerButtonOK implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
-			new HelloPanel(frame);
+			
+			String name = textField.getText();
+			writeNameToFile(name);			
+			new WelcomePanel(frame);
+			
 		}
 		
 	}
 	
-	private String readNameFromFile(){
+	private void writeNameToFile(String name){
 		
-		String filePath = System.getProperty("java.io.tmpdir");
-		String fileName = "HwFstWriteReadFileSwing.txt";
-		String fileLocation = filePath + fileName;
+		String fileLocation = TextService.FILE_PATH + TextService.FILE_NAME;
 		File file = new File(fileLocation);
-		return fileService.readTextFromFile(file);
+		textService.writeTextToFile(name, file);
 		
 	}
-	
+		
 }
