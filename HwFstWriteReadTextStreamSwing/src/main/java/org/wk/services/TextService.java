@@ -11,7 +11,7 @@ import java.io.OutputStream;
 public class TextService {
 	
 	
-	public final static String FILE_PATH = System.getProperty("java.io.tmpdir");
+	public final static String FILE_PATH = System.getProperty("java.io.tmpdir") + File.separator;
 	public final static String FILE_NAME = "test.txt";
 	
 	
