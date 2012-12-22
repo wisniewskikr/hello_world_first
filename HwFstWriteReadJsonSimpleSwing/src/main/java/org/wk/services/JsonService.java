@@ -16,7 +16,7 @@ public class JsonService {
 	
 	public void writeJSONObjectToFile(JSONObject obj, File file){
 		
-		FileWriter fw;
+		FileWriter fw = null;
 		
 		try {
 			
@@ -27,6 +27,12 @@ public class JsonService {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if(fw != null){fw.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}

@@ -14,17 +14,24 @@ public class TextService {
 	
 	public void writeTextToFile(String text, File file){
 		
+		FileWriter fw = null;
+		
 		try {
 			
-			FileWriter fw = new FileWriter(file);
+			fw = new FileWriter(file);
 			fw.write(text);
 			fw.flush();
-			fw.close();
 			
 			System.out.println("Done");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally{
+			try {
+				if(fw != null){fw.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		
@@ -33,21 +40,27 @@ public class TextService {
 	public String readTextFromFile(File file){
 
 		StringBuilder sb = new StringBuilder();
+		BufferedReader br = null;
 		
 		try {
 			
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			br = new BufferedReader(new FileReader(file));
 			String strLine;
 			while ((strLine = br.readLine()) != null)   {
 				sb.append(strLine);
 			}
-			br.close();
 			
 			System.out.println("Done");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		} finally {
+			try {
+				if(br != null){br.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		return sb.toString();
 		
