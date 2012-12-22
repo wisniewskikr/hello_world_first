@@ -1,11 +1,11 @@
 package org.wk.services;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import com.google.gson.Gson;
 
 public class JsonService {
 	
@@ -14,15 +14,20 @@ public class JsonService {
 	public final static String FILE_NAME = "test.json";
 	
 	
-	public void writeJSONObjectToFile(JSONObject obj, File file){
+	public void writeObjectToJsonFile(Object obj, File file){
 		
 		FileWriter fw = null;
 		
 		try {
 			
+			Gson gson = new Gson();
+			String json = gson.toJson(obj);
+			
 			fw = new FileWriter(file);
-			fw.write(obj.toJSONString());
+			fw.write(json);
 			fw.flush();
+			
+			System.out.println("Done");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -36,17 +41,28 @@ public class JsonService {
 		
 	}
 	
-	public JSONObject readJSONObjectFromFile(File file){
+	public Object readObjectFromJsonFile(File file, Class<? extends Object> clazz) {
 		
-		JSONObject result = null;
+		Object result = null;
+		BufferedReader br = null;
 		
 		try {
 			
-			JSONParser parser = new JSONParser();
-			result = (JSONObject)parser.parse(new FileReader(file));
+			br = new BufferedReader(new FileReader(file));
+			
+			Gson gson = new Gson();
+			result = gson.fromJson(br, clazz);			
+			
+			System.out.println("Done");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if(br != null){br.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return result;
