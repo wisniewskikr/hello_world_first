@@ -10,7 +10,7 @@ public class HelloWorldFrame extends JFrame{
 	
 	public HelloWorldFrame(){
 		
-		this.setSize(300, 200);
+		this.setSize(400, 255);
 		this.setTitle("Hello World");
 		
 	}
