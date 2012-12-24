@@ -7,7 +7,7 @@
 
 
 <head>
-	<title>Hello World Servlets</title>
+	<title>Hello World</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="scripts/script.js"></script>
 	<link type="text/css" rel="stylesheet" href="styles/style.css">
@@ -20,7 +20,7 @@
 	<table align="center" frame="border" class="mainTable">
 		<tr>
 			<td>
-				<h2>Hello World Servlets</h2>
+				<h2>Hello World</h2>
 				<h3>Page: <b>Welcome</b></h3>
 			</td>
 		</tr>		
