@@ -11,6 +11,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
+import org.jboss.shrinkwrap.resolver.api.maven.filter.ScopeFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,16 +39,14 @@ public class HelloWorldTest {
 	@Deployment
     public static Archive<?> createDeployment() {
 		
-		MavenDependencyResolver resolver = DependencyResolvers.use(
-		MavenDependencyResolver.class).loadMetadataFromPom("pom.xml");
+		MavenDependencyResolver resolver = DependencyResolvers
+				.use(MavenDependencyResolver.class)
+				.loadMetadataFromPom("pom.xml")
+				.includeDependenciesFromPom("pom.xml");
 		
         WebArchive war = ShrinkWrap.create(WebArchive.class, WAR_FILE)
         .addPackages(true, "pl.kwi")
-        .addAsLibraries(
-            resolver
-            .artifact("jstl:jstl")
-            .artifact("taglibs:standard")
-        .resolveAsFiles());
+        .addAsLibraries(resolver.resolveAsFiles(new ScopeFilter("", "compile", "runtime")));
         
         addFilesToWar(war, new File("src/main/webapp"));
         
