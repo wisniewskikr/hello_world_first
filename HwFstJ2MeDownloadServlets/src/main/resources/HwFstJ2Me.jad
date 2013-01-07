@@ -1,0 +1,8 @@
+MIDlet-1: Hello World App,,pl.kwi.midlet.HelloWorldMidlet
+MIDlet-Jar-Size: 3266
+MIDlet-Jar-URL: http://192.168.1.14:8080/HwFstJ2MeDownloadServlets/download-jar.do
+MIDlet-Name: HwFstJ2Me Midlet Suite
+MIDlet-Vendor: Midlet Suite Vendor
+MIDlet-Version: 1.0.0
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0
