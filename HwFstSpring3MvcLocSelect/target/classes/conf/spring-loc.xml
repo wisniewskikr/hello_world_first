@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+ 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 	xmlns:context="http://www.springframework.org/schema/context"
+ 	xmlns:tx="http://www.springframework.org/schema/tx" 
+ 	xmlns:p="http://www.springframework.org/schema/p"
+ 	xmlns:aop="http://www.springframework.org/schema/aop"
+ 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+ 	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+ 						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+ 						http://www.springframework.org/schema/context  
+ 						http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+ 						http://www.springframework.org/schema/tx  
+ 						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+ 						http://www.springframework.org/schema/aop  
+ 						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+ 						http://www.springframework.org/schema/mvc
+ 						http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+ 	
+ 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	  <property name="defaultEncoding" value="UTF-8"/>
+	  <property name="basenames">
+	    <list>
+	      <value>classpath:messages</value>
+	    </list>
+	  </property>
+	</bean>
+ 	 	 	
+ 	 <!-- 
+ 	 Resolvers enable to change locale on code side. 
+ 	 You can just inject resolver and change locale.
+ 	 You can also change default locale for different then in browser. 
+ 	 -->
+	<!--  Possibilities: "SessionLocaleResolver", "CookieLocaleResolver", "AcceptHeaderLocaleResolver"  -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en" />
+	</bean>
+	
+	<!-- 
+	Interceptors enable to change locale on web side. 
+	They are looking for parameter "lang" and change locale. 
+	-->
+	<mvc:interceptors>
+ 		<!-- This runs for all mappings -->
+     	<bean  class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+     		<property name="paramName" value="lang" /> 
+     	</bean>
+	</mvc:interceptors>
+	
+</beans>
