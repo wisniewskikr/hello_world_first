@@ -3,6 +3,12 @@ package pl.kwi.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.Node;
+import javax.jcr.Repository;
+import javax.jcr.Session;
+import javax.jcr.SimpleCredentials;
+
+import org.apache.jackrabbit.commons.JcrUtils;
 import org.springframework.stereotype.Service;
 
 import pl.kwi.entities.UserEntity;
@@ -19,7 +25,27 @@ public class UserService {
 	 */
 	public Long createUser(UserEntity user){
 		
-		return null;
+		Session session = null;
+		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository("http://localhost:8181/repository/default/"); 
+			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
+			Node root = session.getRootNode(); 
+	
+			// Store content 
+			Node hello = root.addNode("hello"); 
+			Node world = hello.addNode("world"); 
+			world.setProperty("message", "Hello, World!"); 
+			session.save();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally { 
+				if(session != null) {
+					session.logout(); 
+				}
+			}
+			return Long.valueOf(1L);
 		
 	}
 	

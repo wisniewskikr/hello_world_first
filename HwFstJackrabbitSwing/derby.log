@@ -1,0 +1,30 @@
+----------------------------------------------------------------
+2015-01-22 14:18:58.917 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a816c00e-014b-1202-a797-000005cb46a8
+on database directory C:\java\git_repos\hello_world_first\HwFstJackrabbitSwing\jackrabbit\version\db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-01-22 14:18:59.400 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 888c4022-014b-1202-a797-000005cb46a8
+on database directory C:\java\git_repos\hello_world_first\HwFstJackrabbitSwing\jackrabbit\workspaces\default\db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-01-22 14:19:00.040 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 6965c036-014b-1202-a797-000005cb46a8
+on database directory C:\java\git_repos\hello_world_first\HwFstJackrabbitSwing\jackrabbit\workspaces\security\db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-01-22 14:19:00.430 GMT:
+Shutting down instance 888c4022-014b-1202-a797-000005cb46a8
+----------------------------------------------------------------
+
+2015-01-22 14:19:00.461 GMT:
+Shutting down instance 6965c036-014b-1202-a797-000005cb46a8
+----------------------------------------------------------------
+
+2015-01-22 14:19:00.461 GMT:
+Shutting down instance a816c00e-014b-1202-a797-000005cb46a8
+----------------------------------------------------------------
