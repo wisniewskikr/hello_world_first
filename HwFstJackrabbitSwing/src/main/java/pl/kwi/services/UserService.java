@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Property;
+import javax.jcr.NodeIterator;
 import javax.jcr.Repository;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
@@ -16,72 +16,19 @@ import pl.kwi.entities.UserEntity;
 
 public class UserService {
 	
-	public long getCurrentId() throws Exception {
-		
-	Session session = null;
-	long id;
-		
-		try { 
-		
-			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
-			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
-			Node root = session.getRootNode(); 
-			
-			Node projectNode = null;
-			if(root.hasNode("hw_fst_jackrabbit_swing")) {
-				projectNode = root.getNode("hw_fst_jackrabbit_swing");
-			} else {
-				projectNode = root.addNode("hw_fst_jackrabbit_swing"); 
-			}
-			
-			Node currentIdNode = null;
-			if(projectNode.hasNode("current_id")) {
-				currentIdNode = projectNode.getNode("current_id");
-			} else {
-				currentIdNode = projectNode.addNode("current_id");
-				currentIdNode.setProperty("id", 0L);
-				session.save();
-			}
-			
-			Property idProp = currentIdNode.getProperty("id");
-			id = idProp.getLong();
-			currentIdNode.setProperty("id", ++id);
-			session.save();
-	
-		} finally { 
-			if(session != null) {
-				session.logout(); 
-			}
-		}
-		
-		return id;
-		
-	}
-		
 		
 	public void createUser(UserEntity user) throws Exception{
 		
-		long id = getCurrentId();
-				
 		Session session = null;
 		
 		try { 
 		
 			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
 			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
-			Node root = session.getRootNode(); 
-	
-			Node projectNode = root.getNode("hw_fst_jackrabbit_swing");
 			
-			Node usersNode = null;
-			if(projectNode.hasNode("users")) {
-				usersNode = projectNode.getNode("users");
-			} else {
-				usersNode = projectNode.addNode("users");
-			}
-			
-			Node userNode = usersNode.addNode("user" + String.valueOf(id)); 
-			userNode.setProperty("id", id);
+			Node usersNode = getUsersNode(session);
+			Node userNode = usersNode.addNode("user"); 					
+			userNode.setProperty("id", Long.valueOf(userNode.getIndex()));
 			userNode.setProperty("name", user.getName());
 			session.save();
 			
@@ -95,7 +42,33 @@ public class UserService {
 	
 	public UserEntity readUser(Long id) throws Exception{
 		
-		return null;
+		UserEntity user = null;
+		Session session = null;
+		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
+			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
+			
+			Node usersNode = getUsersNode(session);
+			NodeIterator it = usersNode.getNodes();
+			while(it.hasNext()) {
+				Node userNode = it.nextNode();
+				Long userId = userNode.getProperty("id").getLong();
+				if(id.equals(userId)){
+					user = new UserEntity();
+					user.setId(userId);
+					user.setName(userNode.getProperty("name").getString());
+				}
+			}
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
+		
+		return user;
 		
 	}
 	
@@ -113,7 +86,53 @@ public class UserService {
 	
 	public List<UserEntity> getUsers() throws Exception{
 		
-		return new ArrayList<UserEntity>();
+		List<UserEntity> users = new ArrayList<UserEntity>();
+		Session session = null;
+		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
+			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
+			
+			Node usersNode = getUsersNode(session);
+			NodeIterator it = usersNode.getNodes();
+			while(it.hasNext()) {
+				Node userNode = it.nextNode();
+				UserEntity user = new UserEntity();
+				user.setId(userNode.getProperty("id").getLong());
+				user.setName(userNode.getProperty("name").getString());
+				users.add(user);
+			}
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
+		
+		return users;
+		
+	}
+	
+	protected Node getUsersNode(Session session) throws Exception {
+		
+		Node root = session.getRootNode(); 
+		
+		Node projectNode = null;
+		if(root.hasNode("hw_fst_jackrabbit_swing")) {
+			projectNode = root.getNode("hw_fst_jackrabbit_swing");
+		} else {
+			projectNode = root.addNode("hw_fst_jackrabbit_swing"); 
+		}
+		
+		Node usersNode = null;
+		if(projectNode.hasNode("users")) {
+			usersNode = projectNode.getNode("users");
+		} else {
+			usersNode = projectNode.addNode("users");
+		}
+		
+		return usersNode;
 		
 	}
 
