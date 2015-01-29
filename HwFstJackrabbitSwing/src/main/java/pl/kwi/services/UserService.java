@@ -1,5 +1,6 @@
 package pl.kwi.services;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Repository;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
 import org.apache.jackrabbit.commons.JcrUtils;
 
@@ -16,7 +20,7 @@ import pl.kwi.entities.UserEntity;
 
 public class UserService {
 	
-		
+	
 	public void createUser(UserEntity user) throws Exception{
 		
 		Session session = null;
@@ -74,6 +78,29 @@ public class UserService {
 	
 	public void updateUser(UserEntity user) throws Exception{
 		
+		Session session = null;
+		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
+			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
+			
+			String query = MessageFormat.format("SELECT * FROM [nt:base] AS s WHERE ISDESCENDANTNODE([/hw_fst_jackrabbit_swing/users]) AND s.[id] = {0}", user.getId());
+						
+			QueryManager manager = session.getWorkspace().getQueryManager();
+			QueryResult queryResult = manager.createQuery(query, Query.JCR_SQL2).execute();
+			NodeIterator it = queryResult.getNodes();
+			while(it.hasNext()) {
+				Node userNode = it.nextNode();
+				userNode.setProperty("name", user.getName());
+				session.save();
+			}	
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
 		
 						
 	}
