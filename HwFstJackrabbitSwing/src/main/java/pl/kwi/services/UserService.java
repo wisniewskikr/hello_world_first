@@ -21,19 +21,29 @@ import pl.kwi.entities.UserEntity;
 public class UserService {
 	
 	
+	private static final String QUERY = "SELECT * FROM [nt:base] AS s WHERE ISDESCENDANTNODE([/hw_fst_jackrabbit_swing/users]) AND s.[id] = {0}";
+	private static final String JACKRABBIT_PATH = "http://localhost:8181/server";
+	private static final String JACKRABBIT_CREDENTIAL = "admin";
+	private static final String PROJECT_NODE = "hw_fst_jackrabbit_swing";
+	private static final String USERS_NODE = "users";
+	private static final String USER_NODE = "user";
+	private static final String NAME_PROP = "name";
+	private static final String ID_PROP = "id";
+
+	
 	public void createUser(UserEntity user) throws Exception{
 		
 		Session session = null;
 		
 		try { 
 		
-			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
-			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
 			
 			Node usersNode = getUsersNode(session);
-			Node userNode = usersNode.addNode("user"); 					
-			userNode.setProperty("id", Long.valueOf(userNode.getIndex()));
-			userNode.setProperty("name", user.getName());
+			Node userNode = usersNode.addNode(USER_NODE); 					
+			userNode.setProperty(ID_PROP, Long.valueOf(userNode.getIndex()));
+			userNode.setProperty(NAME_PROP, user.getName());
 			session.save();
 			
 		} finally { 
@@ -51,18 +61,18 @@ public class UserService {
 		
 		try { 
 		
-			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
-			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
 			
 			Node usersNode = getUsersNode(session);
 			NodeIterator it = usersNode.getNodes();
 			while(it.hasNext()) {
 				Node userNode = it.nextNode();
-				Long userId = userNode.getProperty("id").getLong();
+				Long userId = userNode.getProperty(ID_PROP).getLong();
 				if(id.equals(userId)){
 					user = new UserEntity();
 					user.setId(userId);
-					user.setName(userNode.getProperty("name").getString());
+					user.setName(userNode.getProperty(NAME_PROP).getString());
 				}
 			}
 			
@@ -82,17 +92,17 @@ public class UserService {
 		
 		try { 
 		
-			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
-			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
 			
-			String query = MessageFormat.format("SELECT * FROM [nt:base] AS s WHERE ISDESCENDANTNODE([/hw_fst_jackrabbit_swing/users]) AND s.[id] = {0}", user.getId());
+			String query = MessageFormat.format(QUERY, user.getId());
 						
 			QueryManager manager = session.getWorkspace().getQueryManager();
 			QueryResult queryResult = manager.createQuery(query, Query.JCR_SQL2).execute();
 			NodeIterator it = queryResult.getNodes();
 			while(it.hasNext()) {
 				Node userNode = it.nextNode();
-				userNode.setProperty("name", user.getName());
+				userNode.setProperty(NAME_PROP, user.getName());
 				session.save();
 			}	
 			
@@ -107,7 +117,29 @@ public class UserService {
 	
 	public void deleteUser(Long id) throws Exception{
 		
+		Session session = null;
 		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
+			
+			String query = MessageFormat.format(QUERY, id);
+			
+			QueryManager manager = session.getWorkspace().getQueryManager();
+			QueryResult queryResult = manager.createQuery(query, Query.JCR_SQL2).execute();
+			NodeIterator it = queryResult.getNodes();
+			while(it.hasNext()) {
+				Node userNode = it.nextNode();
+				userNode.remove();
+				session.save();
+			}
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
 				
 	}
 	
@@ -118,16 +150,16 @@ public class UserService {
 		
 		try { 
 		
-			Repository repository = JcrUtils.getRepository("http://localhost:8181/server"); 
-			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
 			
 			Node usersNode = getUsersNode(session);
 			NodeIterator it = usersNode.getNodes();
 			while(it.hasNext()) {
 				Node userNode = it.nextNode();
 				UserEntity user = new UserEntity();
-				user.setId(userNode.getProperty("id").getLong());
-				user.setName(userNode.getProperty("name").getString());
+				user.setId(userNode.getProperty(ID_PROP).getLong());
+				user.setName(userNode.getProperty(NAME_PROP).getString());
 				users.add(user);
 			}
 			
@@ -146,17 +178,17 @@ public class UserService {
 		Node root = session.getRootNode(); 
 		
 		Node projectNode = null;
-		if(root.hasNode("hw_fst_jackrabbit_swing")) {
-			projectNode = root.getNode("hw_fst_jackrabbit_swing");
+		if(root.hasNode(PROJECT_NODE)) {
+			projectNode = root.getNode(PROJECT_NODE);
 		} else {
-			projectNode = root.addNode("hw_fst_jackrabbit_swing"); 
+			projectNode = root.addNode(PROJECT_NODE); 
 		}
 		
 		Node usersNode = null;
-		if(projectNode.hasNode("users")) {
-			usersNode = projectNode.getNode("users");
+		if(projectNode.hasNode(USERS_NODE)) {
+			usersNode = projectNode.getNode(USERS_NODE);
 		} else {
-			usersNode = projectNode.addNode("users");
+			usersNode = projectNode.addNode(USERS_NODE);
 		}
 		
 		return usersNode;
