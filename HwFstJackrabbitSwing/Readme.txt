@@ -3,7 +3,7 @@ HELLO WORLD FIRST JACKRABBIT SWING
 
 
 1. DESCRIPTION
-This is simple application which enables CRUD operations on Jackrabbit. Jackrabbit
+This is simple Swing application which enables CRUD operations on Jackrabbit. Jackrabbit
 is nosql data base. It is also implementation from Apache of JCR (ang. Java Content Repository).
 This application enables:
 - creating user in Jackrabbit data base;
