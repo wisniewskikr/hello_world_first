@@ -53,13 +53,14 @@ public class CreateController {
 	 * @param request object <code>HttpServletRequest</code> with request from browser
 	 * @param response object <code>HttpServletResponse</code> with response sent to browser
 	 * @return object <code>ModelAndView</code> with result of this method
+	 * @throws Exception 
 	 */
 	@RequestMapping(value="/create-button", method=RequestMethod.POST)
 	public ModelAndView handleCreateButton(
 			@Valid @ModelAttribute("command") CreateCommand command,
 			BindingResult bindingResult,
 			HttpServletRequest request, 
-			HttpServletResponse response){
+			HttpServletResponse response) throws Exception{
 		
 		if(bindingResult.hasErrors()) {
 			return displayPage(command, request, response);

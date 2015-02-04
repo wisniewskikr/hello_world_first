@@ -32,13 +32,14 @@ public class DeleteController {
 	 * @param response object <code>HttpServletResponse</code> with response sent to browser
 	 * @param id object <code>String</code> with id of user which should be displayed
 	 * @return object <code>ModelAndView</code> with result of this method
+	 * @throws Exception 
 	 */
 	@RequestMapping("/{id}")
 	public ModelAndView displayPage(
 			@ModelAttribute("command") DeleteCommand command,
 			HttpServletRequest request, 
 			HttpServletResponse response,
-			@PathVariable Long id){
+			@PathVariable Long id) throws Exception{
 		
 		UserEntity user = userService.readUser(id);
 		command.setName(user.getName());
@@ -55,17 +56,18 @@ public class DeleteController {
 	 * @param request object <code>HttpServletRequest</code> with request from browser
 	 * @param response object <code>HttpServletResponse</code> with response sent to browser
 	 * @return object <code>ModelAndView</code> with result of this method
+	 * @throws Exception 
 	 */
 	@RequestMapping("/delete-button")
 	public ModelAndView handleDeleteButton(
 			@ModelAttribute("command")DeleteCommand command,
 			HttpServletRequest request, 
-			HttpServletResponse response){
+			HttpServletResponse response) throws Exception{
 		
 		UserEntity user = new UserEntity();
 		user.setId(command.getId());
 		user.setName(command.getName());
-		userService.deleteUser(user);
+		userService.deleteUser(user.getId());
 		
 		return new ModelAndView(new RedirectView("/table/", true, true, true));
 		

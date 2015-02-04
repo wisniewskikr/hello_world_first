@@ -1,98 +1,199 @@
 package pl.kwi.services;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.Repository;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.springframework.stereotype.Service;
 
 import pl.kwi.entities.UserEntity;
 
+
 @Service
 public class UserService {
+	
+	
+	private static final String QUERY = "SELECT * FROM [nt:base] AS s WHERE ISDESCENDANTNODE([/hw_fst_jackrabbit_swing/users]) AND s.[id] = {0}";
+	private static final String JACKRABBIT_PATH = "http://localhost:8181/server";
+	private static final String JACKRABBIT_CREDENTIAL = "admin";
+	private static final String PROJECT_NODE = "hw_fst_jackrabbit_swing";
+	private static final String USERS_NODE = "users";
+	private static final String USER_NODE = "user";
+	private static final String NAME_PROP = "name";
+	private static final String ID_PROP = "id";
 
-	/**
-	 * Method creates user in database.
-	 * 
-	 * @param user object <code>UserEntity</code> with entity of
-	 * user which should be created in database
-	 * @return object <code>Long</code> with id of created user
-	 */
-	public Long createUser(UserEntity user){
+	
+	public void createUser(UserEntity user) throws Exception{
 		
 		Session session = null;
 		
 		try { 
 		
-			Repository repository = JcrUtils.getRepository("http://localhost:8181/repository/default/"); 
-			session = repository.login(new SimpleCredentials("admin", "admin".toCharArray())); 
-			Node root = session.getRootNode(); 
-	
-			// Store content 
-			Node hello = root.addNode("hello"); 
-			Node world = hello.addNode("world"); 
-			world.setProperty("message", "Hello, World!"); 
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
+			
+			Node usersNode = getUsersNode(session);
+			Node userNode = usersNode.addNode(USER_NODE); 					
+			userNode.setProperty(ID_PROP, Long.valueOf(userNode.getIndex()));
+			userNode.setProperty(NAME_PROP, user.getName());
 			session.save();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally { 
-				if(session != null) {
-					session.logout(); 
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
+		
+	}
+	
+	public UserEntity readUser(Long id) throws Exception{
+		
+		UserEntity user = null;
+		Session session = null;
+		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
+			
+			Node usersNode = getUsersNode(session);
+			NodeIterator it = usersNode.getNodes();
+			while(it.hasNext()) {
+				Node userNode = it.nextNode();
+				Long userId = userNode.getProperty(ID_PROP).getLong();
+				if(id.equals(userId)){
+					user = new UserEntity();
+					user.setId(userId);
+					user.setName(userNode.getProperty(NAME_PROP).getString());
 				}
 			}
-			return Long.valueOf(1L);
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
+		
+		return user;
 		
 	}
 	
-	/**
-	 * Method gets user with specified id from database.
-	 * 
-	 * @param id object <code>Long</code> with id of user which
-	 * should be get from database.
-	 * @return object <code>UserEntity</code> with user from database
-	 * with specified id
-	 */
-	public UserEntity readUser(Long id){
+	public void updateUser(UserEntity user) throws Exception{
 		
-		return null;
+		Session session = null;
+		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
+			
+			String query = MessageFormat.format(QUERY, user.getId());
+						
+			QueryManager manager = session.getWorkspace().getQueryManager();
+			QueryResult queryResult = manager.createQuery(query, Query.JCR_SQL2).execute();
+			NodeIterator it = queryResult.getNodes();
+			while(it.hasNext()) {
+				Node userNode = it.nextNode();
+				userNode.setProperty(NAME_PROP, user.getName());
+				session.save();
+			}	
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
+		
+						
+	}
+	
+	public void deleteUser(Long id) throws Exception{
+		
+		Session session = null;
+		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
+			
+			String query = MessageFormat.format(QUERY, id);
+			
+			QueryManager manager = session.getWorkspace().getQueryManager();
+			QueryResult queryResult = manager.createQuery(query, Query.JCR_SQL2).execute();
+			NodeIterator it = queryResult.getNodes();
+			while(it.hasNext()) {
+				Node userNode = it.nextNode();
+				userNode.remove();
+				session.save();
+			}
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
+				
+	}
+	
+	public List<UserEntity> getUsers() throws Exception{
+		
+		List<UserEntity> users = new ArrayList<UserEntity>();
+		Session session = null;
+		
+		try { 
+		
+			Repository repository = JcrUtils.getRepository(JACKRABBIT_PATH); 
+			session = repository.login(new SimpleCredentials(JACKRABBIT_CREDENTIAL, JACKRABBIT_CREDENTIAL.toCharArray())); 
+			
+			Node usersNode = getUsersNode(session);
+			NodeIterator it = usersNode.getNodes();
+			while(it.hasNext()) {
+				Node userNode = it.nextNode();
+				UserEntity user = new UserEntity();
+				user.setId(userNode.getProperty(ID_PROP).getLong());
+				user.setName(userNode.getProperty(NAME_PROP).getString());
+				users.add(user);
+			}
+			
+		} finally { 
+			if(session != null) {
+				session.logout(); 
+			}
+		}
+		
+		return users;
 		
 	}
 	
-	/**
-	 * Method updates user in database.
-	 * 
-	 * @param user object <code>UserEntity</code> with entity of
-	 * user which should be updated in database
-	 */
-	public void updateUser(UserEntity user){
+	protected Node getUsersNode(Session session) throws Exception {
 		
+		Node root = session.getRootNode(); 
 		
-	}
-	
-	/**
-	 * Method deletes user from database.
-	 * 
-	 * @param user object <code>UserEntity</code> with entity of
-	 * user which should be deleted in database
-	 */
-	public void deleteUser(UserEntity user){
+		Node projectNode = null;
+		if(root.hasNode(PROJECT_NODE)) {
+			projectNode = root.getNode(PROJECT_NODE);
+		} else {
+			projectNode = root.addNode(PROJECT_NODE); 
+		}
 		
+		Node usersNode = null;
+		if(projectNode.hasNode(USERS_NODE)) {
+			usersNode = projectNode.getNode(USERS_NODE);
+		} else {
+			usersNode = projectNode.addNode(USERS_NODE);
+		}
 		
-	}
-	
-	/**
-	 * Method gets list of all users from database.
-	 * 
-	 * @return list of all users from database
-	 */
-	public List<UserEntity> getUserList(){
-		
-		return new ArrayList<UserEntity>();
+		return usersNode;
 		
 	}
 

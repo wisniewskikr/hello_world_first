@@ -33,13 +33,14 @@ public class ViewController {
 	 * @param response object <code>HttpServletResponse</code> with response sent to browser
 	 * @param id object <code>String</code> with id of user which should be displayed
 	 * @return object <code>ModelAndView</code> with result of this method
+	 * @throws Exception 
 	 */
 	@RequestMapping("/{id}")
 	public ModelAndView displayPage(
 			@ModelAttribute("command") ViewCommand command,
 			HttpServletRequest request, 
 			HttpServletResponse response,
-			@PathVariable Long id){
+			@PathVariable Long id) throws Exception{
 		
 		UserEntity user = userService.readUser(id);
 		command.setName(user.getName());

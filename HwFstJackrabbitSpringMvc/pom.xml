@@ -183,13 +183,6 @@
 			<version>1.1.2</version>
 		</dependency>
 		
-		<!-- Log dependencies -->
-		<!-- dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.4.2</version>
-		</dependency -->
-		
 		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -214,6 +207,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.2.0.Final</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- The JCR API -->
@@ -222,20 +221,26 @@
 			<artifactId>jcr</artifactId>
 			<version>2.0</version>
 		</dependency>
-	
-		<!-- Jackrabbit content repository -->
+		
+		<!-- All the Jackrabbit libraries needed for DavEx, plus JcrUtils -->
 		<dependency>
-			<groupId>org.apache.jackrabbit</groupId>
-			<artifactId>jackrabbit-core</artifactId>
-			<version>2.9.0</version>
+		  <groupId>org.apache.jackrabbit</groupId>
+		  <artifactId>jackrabbit-jcr2dav</artifactId>
+		  <version>2.9.0</version>
+		  <exclusions>
+		  	<exclusion>
+		  		<artifactId>slf4j-api</artifactId>
+		  		<groupId>org.slf4j</groupId>
+		  	</exclusion>
+		  </exclusions>
 		</dependency>
 		
-		<!-- Use Log4J for logging --> 
-		<dependency> 
-			<groupId>org.slf4j</groupId> 
-			<artifactId>slf4j-log4j12</artifactId> 
-			<version>1.7.5</version> 
-		</dependency> 
+		<!-- The SFL4J logging implementation you prefer -->
+		<dependency>
+		  <groupId>org.slf4j</groupId>
+		  <artifactId>slf4j-simple</artifactId>
+		  <version>1.5.8</version>
+		</dependency>
 						
 	</dependencies>
 	

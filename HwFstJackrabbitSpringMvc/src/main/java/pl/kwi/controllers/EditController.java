@@ -35,13 +35,14 @@ public class EditController {
 	 * @param response object <code>HttpServletResponse</code> with response sent to browser
 	 * @param id object <code>String</code> with id of user which should be displayed
 	 * @return object <code>ModelAndView</code> with result of this method
+	 * @throws Exception 
 	 */
 	@RequestMapping("/{id}")
 	public ModelAndView displayPage(
 			@ModelAttribute("command") EditCommand command,
 			HttpServletRequest request, 
 			HttpServletResponse response,
-			@PathVariable Long id){
+			@PathVariable Long id) throws Exception{
 		
 		UserEntity user = userService.readUser(id);
 		command.setName(user.getName());
@@ -58,13 +59,14 @@ public class EditController {
 	 * @param request object <code>HttpServletRequest</code> with request from browser
 	 * @param response object <code>HttpServletResponse</code> with response sent to browser
 	 * @return object <code>ModelAndView</code> with result of this method
+	 * @throws Exception 
 	 */
 	@RequestMapping(value="/update-button", method=RequestMethod.POST)
 	public ModelAndView handleUpdateButton(
 			@Valid @ModelAttribute("command")EditCommand command,
 			BindingResult bindingResult,
 			HttpServletRequest request, 
-			HttpServletResponse response){
+			HttpServletResponse response) throws Exception{
 		
 		if(bindingResult.hasErrors()) {
 			return displayPage(command, request, response, command.getId());

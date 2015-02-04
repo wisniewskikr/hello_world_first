@@ -39,14 +39,15 @@ public class TableController{
 	 * @param request object <code>HttpServletRequest</code> with request from browser
 	 * @param response object <code>HttpServletResponse</code> with response sent to browser
 	 * @return object <code>ModelAndView</code> with result of this method
+	 * @throws Exception 
 	 */
 	@RequestMapping("/")
 	public ModelAndView displayPage(
 			@ModelAttribute("command") TableCommand command,
 			HttpServletRequest request, 
-			HttpServletResponse response){
+			HttpServletResponse response) throws Exception{
 		
-		command.setUsers(userService.getUserList());
+		command.setUsers(userService.getUsers());
 		
 		return new ModelAndView("tableJsp");
 		
