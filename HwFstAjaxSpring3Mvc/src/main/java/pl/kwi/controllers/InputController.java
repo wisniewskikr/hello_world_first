@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import pl.kwi.ajax.Response;
 import pl.kwi.commands.InputCommand;
 import pl.kwi.services.NameService;
 
@@ -74,6 +78,12 @@ public class InputController{
 		
 		return new ModelAndView(new RedirectView("/output", true, true, true));
 		
+	}
+	
+	@RequestMapping(value="/ajax", method=RequestMethod.GET)
+	public @ResponseBody Response ajax() {
+		Response response = new Response("Ok");
+		return response;
 	}
 
 }

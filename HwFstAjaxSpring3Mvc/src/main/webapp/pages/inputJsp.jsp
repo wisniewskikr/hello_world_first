@@ -15,6 +15,33 @@
 	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>	
+	<script type="text/javascript">
+	
+		function sendNameByAjax(){
+						
+			var dataObj = {
+				action: "name",	
+				name: $('#name').val()					
+			};
+			var dataJson = JSON.stringify(dataObj, null, 2);
+			
+			var requestUrlJson = "input/ajax";
+	        
+	        $.ajax({
+	    	    type: "GET",
+	    	    url: requestUrlJson,
+	    	   	//data : dataJson,
+	    	    dataType: "json",
+	    	    contentType: "application/json",
+	    	    success: function(data){
+	    	    	alert("success");
+	    	    	alert(data.message);
+	    	    }
+	    	})
+	       		
+		}
+	
+	</script>
 </head>
 
 
@@ -34,6 +61,7 @@
 		</div>
 		<div id="buttons" name="buttons" class="buttons">
 			<input type="submit" id="ok" name="ok" value="OK" title="Go to next page"/>
+			<input type="button" id="tmp" name="tmp" value="Tmp" title="Tmp" onclick="sendNameByAjax();"/>
 		</div>
 	</div>		
 
