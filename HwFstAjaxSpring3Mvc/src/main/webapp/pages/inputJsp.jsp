@@ -32,10 +32,10 @@
 			    	$("#errors").text("");
 			    }
 			 			    
-			    $.get("${pageContext.request.contextPath}/input/ajax/" + name, function(response) {
+			    $.get("${pageContext.request.contextPath}/input/ajax/" + name, function(command) {
 			    	$("#inputContent").hide();
 			    	$("#outputContent").show();
-			    	$("#result").text(response.message);
+			    	$("#result").text(command.name);
 			    });
 			    return false;
 			});
