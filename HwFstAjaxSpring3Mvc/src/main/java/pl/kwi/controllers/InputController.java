@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,9 +81,9 @@ public class InputController{
 		
 	}
 	
-	@RequestMapping(value="/ajax", method=RequestMethod.GET)
-	public @ResponseBody Response ajax() {
-		Response response = new Response("Ok");
+	@RequestMapping(value="/ajax/{name}", method=RequestMethod.GET)
+	public @ResponseBody Response ajax(@PathVariable String name) {
+		Response response = new Response(name);
 		return response;
 	}
 
