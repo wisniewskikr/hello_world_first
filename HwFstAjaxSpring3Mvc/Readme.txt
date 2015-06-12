@@ -1,14 +1,8 @@
 DESCRIPTION
 ===========
 
-This is example project built by using framework Spring 3 MVC. It consists of two pages:
-- input page		: here you can type your name;
-- output page		: here your name is displayed after text "Hello World"
+This is example project with usage Ajax and method GET with framework Spring 3 MVC. 
 
-This project shows how to use framework Spring 3 MVC together with:
-- java script;
-- css;
-- validation.
 
 Recommended deployment of project:
 ----------------------------------
@@ -18,7 +12,7 @@ mvn clean install -Ploc,deploy
 Recommended usage of project:
 -----------------------------
 Browser url:
-http://localhost:8080/Spring3Mvc-example-helloworld
+http://localhost:8080/HwFstAjaxGetSpring3Mvc
 
 
 
@@ -55,7 +49,7 @@ Ad 1\ Copy war file
 ===================
 You can do it using following steps:
 - Open console;
-- Go to project folder "Spring3Mvc-example-helloworld";
+- Go to project folder "HwFstAjaxGetSpring3Mvc;
 - Use Maven command for building project. Command: 
   
   mvn clean install
@@ -87,7 +81,7 @@ USAGE
 
 Type in browser:
 
-http://localhost:8080/Spring3Mvc-example-helloworld
+http://localhost:8080/HwFstAjaxGetSpring3Mvc
 
 
 -----------------------------------
