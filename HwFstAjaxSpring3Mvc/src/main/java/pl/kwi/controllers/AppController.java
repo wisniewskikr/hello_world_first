@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import pl.kwi.commands.InputCommand;
+import pl.kwi.commands.AppCommand;
 
 /**
- * Class of controller for page "Input".
+ * Class of controller for application.
  * 
  * @author Krzysztof Wisniewski
  *
  */
 @Controller
-@RequestMapping(value="/input")
-public class InputController{
+@RequestMapping(value="/app")
+public class AppController{
 	
 	
 	/**
@@ -34,17 +34,23 @@ public class InputController{
 	 */
 	@RequestMapping
 	public ModelAndView displayPage(
-			@ModelAttribute("command")InputCommand command,
+			@ModelAttribute("command")AppCommand command,
 			HttpServletRequest request, 
 			HttpServletResponse response){
 				
-		return new ModelAndView("inputJsp");
+		return new ModelAndView("appJsp");
 		
 	}
 	
+	/**
+	 * Method handles name sent from browser by ajax.
+	 * 
+	 * @param name object <code>String</code> with name
+	 * @return object <code>AppCommand</code> with name
+	 */
 	@RequestMapping(value="/ajax/{name}", method=RequestMethod.GET)
-	public @ResponseBody InputCommand ajax(@PathVariable String name) {
-		InputCommand command = new InputCommand();
+	public @ResponseBody AppCommand ajax(@PathVariable String name) {
+		AppCommand command = new AppCommand();
 		command.setName(name);
 		return command;
 	}

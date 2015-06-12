@@ -8,7 +8,7 @@
 
 
 <head>
-	<title>Hello World - Input</title>
+	<title>Hello World</title>
 	<base href="${pageContext.request.contextPath}/">
 	<link type="text/css" rel="stylesheet" href="css/style.css">
 	<link type="text/css" rel="stylesheet" href="css/jquery-ui-1.10.3/smoothness/jquery-ui-1.10.3.custom.css">
@@ -32,7 +32,7 @@
 			    	$("#errors").text("");
 			    }
 			 			    
-			    $.get("${pageContext.request.contextPath}/input/ajax/" + name, function(command) {
+			    $.get("${pageContext.request.contextPath}/app/ajax/" + name, function(command) {
 			    	$("#inputContent").hide();
 			    	$("#outputContent").show();
 			    	$("#result").text(command.name);
@@ -55,7 +55,6 @@
 
 <body>
 <spring:form id="inputForm" commandName="command">
-<!-- spring:form id="inputForm" method="post" action="input/handle-button-ok" commandName="command" -->
 
 	<div class="page">
 		<div id="title" name="title" class="title"><h2>Hello World</h2></div>
