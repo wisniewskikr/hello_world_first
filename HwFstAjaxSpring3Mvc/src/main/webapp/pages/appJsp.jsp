@@ -15,41 +15,6 @@
 	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>	
-	<script type="text/javascript">
-		
-		 $(document).ready(function() {
-			 
-			 $("#outputContent").hide();
-			 $("#inputContent").show();
-			 
-			 $("#inputForm").submit(function() {
-				 
-			    var name = $("#name").val();
-			    if(name == null || name == "") {
-			    	$("#errors").text("Please fill this field");
-					  return false;
-			    } else {
-			    	$("#errors").text("");
-			    }
-			 			    
-			    $.get("${pageContext.request.contextPath}/app/ajax/" + name, function(command) {
-			    	$("#inputContent").hide();
-			    	$("#outputContent").show();
-			    	$("#result").text(command.name);
-			    });
-			    return false;
-			});
-			 
-			 $("#back").click(function() {
-				 $("#outputContent").hide();
-				 $("#inputContent").show();
-				 $("#name").val("");
-			 });
-			 
-		 });
-		
-		
-	</script>
 </head>
 
 
@@ -57,18 +22,18 @@
 <spring:form id="inputForm" commandName="command">
 
 	<div class="page">
-		<div id="title" name="title" class="title"><h2>Hello World</h2></div>
+		<div id="title" class="title"><h2>Hello World</h2></div>
 		
 		<div id="inputContent">
-			<div id="subtitle" name="subtitle" class="subtitle"><h3>Page: <b>Input</b></h3></div>
-			<div id="content" name="content" class="content">
+			<div id="subtitle" class="subtitle"><h3>Page: <b>Input</b></h3></div>
+			<div id="content" class="content">
 				<div class="contentElement">
 					<div class="text">Name * <span id="errors" class="error"></span> </div>
 					<div class="input"><input type="text" id="name" name="name" value="${name}" /></div>
 					<div class="description">Type your name here</div>
 				</div>
 			</div>
-			<div id="buttons" name="buttons" class="buttons">
+			<div id="buttons" class="buttons">
 				<input type="submit" id="ok" name="ok" value="OK" title="Go to next page"/>
 			</div>
 		</div>
