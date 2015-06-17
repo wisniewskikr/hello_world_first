@@ -115,3 +115,82 @@ http://localhost:8080/HwFstAjaxGetSpring3Mvc
 		Response response = new Response("Ok");
 		return response;
 	}
+	
+	<script type="text/javascript">
+	
+		 $(document).ready(function() {
+			 
+			$("#outputContent").hide();
+			$("#inputContent").show();
+			alert("0");
+			
+			$("#ok").click(function() {
+				 
+			   var name = $("#name").val();
+						    
+			   $.ajax({
+			        type: "POST",
+			        url: "app/ajax",
+			        data: "name=" + name,
+			        success: function(response){
+				    	$("#inputContent").hide();
+				    	$("#outputContent").show();
+				    	$("#result").text(response.name);
+				    	alert("1");
+			        },
+			        error: function(e){
+			        	alert('Error: ' + e);
+			        	alert("2");
+			        }
+			   });
+			   
+			});
+			
+			$("#back").click(function() {
+				 $("#outputContent").hide();
+				 $("#inputContent").show();
+				 $("#name").val("");
+				 alert("3");
+			});
+			
+			}
+		
+		);
+	
+	</script>
+	
+	
+	<script type="text/javascript">
+	
+		 $(document).ready(function() {
+			 
+			$("#outputContent").hide();
+			$("#inputContent").show();
+			alert("0");
+			
+			$("#ok").click(function() {
+				 
+			   var name = $("#name").val();
+						    
+			   $.post("app/ajax", {name: name}).done(function( data ) {
+				   $("#inputContent").hide();
+			    	$("#outputContent").show();
+			    	$("#result").text(data.name);
+			    	alert("1");
+			   });
+			   
+			});
+			
+			$("#back").click(function() {
+				 $("#outputContent").hide();
+				 $("#inputContent").show();
+				 $("#name").val("");
+				 alert("3");
+			});
+			
+			}
+		
+		);
+	
+	</script>
+	

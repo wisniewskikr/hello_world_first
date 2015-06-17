@@ -48,11 +48,12 @@ public class AppController{
 	 * @param name object <code>String</code> with name
 	 * @return object <code>AppCommand</code> with name
 	 */
-	@RequestMapping(value="/ajax/{name}", method=RequestMethod.GET)
-	public @ResponseBody AppCommand ajax(@PathVariable String name) {
-		AppCommand command = new AppCommand();
-		command.setName(name);
-		return command;
+	@RequestMapping(value="/ajax", method=RequestMethod.POST)
+	public @ResponseBody AppCommand ajax(@ModelAttribute(value="command")AppCommand command) {
+		System.out.println("--- HERE: " + command.getName());
+		AppCommand response = new AppCommand();
+		response.setName(command.getName());
+		return response;
 	}
 
 }

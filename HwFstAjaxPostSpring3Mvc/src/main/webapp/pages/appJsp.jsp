@@ -15,6 +15,47 @@
 	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>	
+	
+	<script type="text/javascript">
+	
+		 $(document).ready(function() {
+			 
+			$("#outputContent").hide();
+			$("#inputContent").show();
+			
+			$("#ok").click(function() {
+				 
+			   var name = $("#name").val();
+						    
+			   $.ajax({
+			        type: "POST",
+			        url: "app/ajax",
+			        data: "name=" + name,
+			        success: function(response){
+				    	$("#inputContent").hide();
+				    	$("#outputContent").show();
+				    	$("#result").text(response.name);
+			        },
+			        error: function(e){
+			        	alert('Error: ' + e);
+			        }
+			   });
+			   return false;
+			   
+			});
+			
+			$("#back").click(function() {
+				 $("#outputContent").hide();
+				 $("#inputContent").show();
+				 $("#name").val("");
+			});
+			
+			}
+		
+		);
+	
+	</script>
+	
 </head>
 
 
