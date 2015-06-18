@@ -2,15 +2,17 @@ package pl.kwi.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import pl.kwi.ajax.AppResponse;
 import pl.kwi.commands.AppCommand;
 
 /**
@@ -48,11 +50,21 @@ public class AppController{
 	 * @param name object <code>String</code> with name
 	 * @return object <code>AppCommand</code> with name
 	 */
-	@RequestMapping(value="/ajax/{name}", method=RequestMethod.GET)
-	public @ResponseBody AppCommand ajax(@PathVariable String name) {
-		AppCommand command = new AppCommand();
-		command.setName(name);
-		return command;
+	@RequestMapping(value="/ajax", method=RequestMethod.GET)
+	public @ResponseBody AppResponse ajax(@Valid @ModelAttribute(value="command")AppCommand command, BindingResult result) {
+		
+		AppResponse response = new AppResponse();
+		
+		if(result.hasErrors()) {
+			response.setStatus("FAIL");
+			response.setMessage(result.getAllErrors().get(0).getDefaultMessage());
+			return response;
+		}
+		
+		response.setStatus("SUCCESS");
+		response.setName(command.getName());
+		return response;
+		
 	}
 
 }
