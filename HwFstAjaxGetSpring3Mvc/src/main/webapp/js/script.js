@@ -5,12 +5,10 @@
 	
 	$("#inputForm").submit(function() {
 		 
-	   var name = $("#name").val();
-				    
 	   $.ajax({
 	        type: "GET",
 	        url: "app/ajax",
-	        data: "name=" + name,
+	        data: $("#inputForm").serialize(),
 	        success: function(response){
 	        	
 	        	if(response.status == "SUCCESS") {

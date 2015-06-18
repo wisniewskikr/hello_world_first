@@ -4,13 +4,11 @@
 	$("#inputContent").show();
 	
 	$("#inputForm").submit(function() {
-		 
-	   var name = $("#name").val();
 				    
 	   $.ajax({
 	        type: "POST",
 	        url: "app/ajax",
-	        data: "name=" + name,
+	        data: $("#inputForm").serialize(),
 	        success: function(response){
 	        	
 	        	if(response.status == "SUCCESS") {
