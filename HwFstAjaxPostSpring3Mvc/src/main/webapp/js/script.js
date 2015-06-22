@@ -11,15 +11,14 @@
 	        data: $("#inputForm").serialize(),
 	        success: function(response){
 	        	
-	        	if(response.status == "SUCCESS") {
+	        	if(response.startsWith("message=")) {
+	        		var errorArray = response.split("=");
+	        		$("#errors").text(errorArray[1]);
+	        	} else {
 	        		$("#inputContent").hide();
 			    	$("#outputContent").show();
-			    	$("#result").text(response.name);
+			    	$("#result").text(response);
 			    	$("#errors").text("");
-	        	}
-	        	
-	        	if(response.status == "FAIL") {
-	        		$("#errors").text(response.message);
 	        	}
 		    	
 	        }
