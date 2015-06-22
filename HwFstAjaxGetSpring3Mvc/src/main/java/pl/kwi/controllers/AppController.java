@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import pl.kwi.ajax.AppResponse;
 import pl.kwi.commands.AppCommand;
 
 /**
@@ -51,19 +50,13 @@ public class AppController{
 	 * @return object <code>AppCommand</code> with name
 	 */
 	@RequestMapping(value="/ajax", method=RequestMethod.GET)
-	public @ResponseBody AppResponse ajax(@Valid @ModelAttribute(value="command")AppCommand command, BindingResult result) {
-		
-		AppResponse response = new AppResponse();
+	public @ResponseBody String ajax(@Valid @ModelAttribute(value="command")AppCommand command, BindingResult result) {
 		
 		if(result.hasErrors()) {
-			response.setStatus("FAIL");
-			response.setMessage(result.getAllErrors().get(0).getDefaultMessage());
-			return response;
+			return "message=" + result.getAllErrors().get(0).getDefaultMessage();
 		}
 		
-		response.setStatus("SUCCESS");
-		response.setName(command.getName());
-		return response;
+		return command.getName();
 		
 	}
 

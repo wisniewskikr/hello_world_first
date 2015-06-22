@@ -82,36 +82,3 @@ USAGE
 Type in browser:
 
 http://localhost:8080/HwFstAjaxGetSpring3Mvc
-
-
------------------------------------
-
-
- $(document).ready(function() {
-			 
-			 $("#inputForm").submit(function() {
-				 	alert("inputForm");
-				    var form = $(this).serialize();
-				    $.postJSON("input/ajax2", form, function(data) {
-				    	alert(data.message);
-				    });
-				    return false;
-			});
-			
-			 
-		 });
-		 
-		 
-		 
-		 	@RequestMapping(value="/ajax", method=RequestMethod.GET)
-	public @ResponseBody Response ajax() {
-		Response response = new Response("Ok");
-		return response;
-	}
-	
-	@RequestMapping(value="/ajax2", method=RequestMethod.GET)
-	public @ResponseBody Response ajax2(@RequestBody InputCommand command) {
-		System.out.println("name: " + command.getName());
-		Response response = new Response("Ok");
-		return response;
-	}
