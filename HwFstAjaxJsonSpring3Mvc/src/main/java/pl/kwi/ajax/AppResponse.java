@@ -1,8 +1,11 @@
 package pl.kwi.ajax;
 
-public class AppResponse {
+import java.io.Serializable;
+
+public class AppResponse implements Serializable {
 	
 	
+	private static final long serialVersionUID = 1L;
 	private String status;
 	private String name;
 	private String message;
