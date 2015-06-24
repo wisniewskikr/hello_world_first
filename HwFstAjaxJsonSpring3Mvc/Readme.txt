@@ -1,7 +1,20 @@
 DESCRIPTION
 ===========
 
-This is example project with usage Ajax and method POST with framework Spring 3 MVC. 
+This is example project with usage Ajax and Json with framework Spring 3 MVC. Json object is sent as
+request and as response. To do it you have to add in pom.xml:
+
+		<!-- Jackson databind -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.5.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.5.4</version>
+		</dependency> 
 
 
 Recommended deployment of project:
@@ -12,7 +25,7 @@ mvn clean install -Ploc,deploy
 Recommended usage of project:
 -----------------------------
 Browser url:
-http://localhost:8080/HwFstAjaxPostSpring3Mvc
+http://localhost:8080/HwFstAjaxJsonSpring3Mvc
 
 
 
@@ -49,12 +62,12 @@ Ad 1\ Copy war file
 ===================
 You can do it using following steps:
 - Open console;
-- Go to project folder "HwFstAjaxPostSpring3Mvc;
+- Go to project folder "HwFstAjaxJsonSpring3Mvc;
 - Use Maven command for building project. Command: 
   
   mvn clean install
   
-- Copy file "HwFstAjaxPostSpring3Mvc.war" from <project_home>/target to <tomcat_home>/webapp
+- Copy file "HwFstAjaxJsonSpring3Mvc.war" from <project_home>/target to <tomcat_home>/webapp
 
 
 Ad 2\ Use Maven plugin for deployment
@@ -81,4 +94,4 @@ USAGE
 
 Type in browser:
 
-http://localhost:8080/HwFstAjaxPostSpring3Mvc
+http://localhost:8080/HwFstAjaxJsonSpring3Mvc
