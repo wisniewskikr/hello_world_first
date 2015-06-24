@@ -52,8 +52,7 @@ public class AppController{
 	 * @return object <code>AppCommand</code> with name
 	 */
 	@RequestMapping(value="/ajax", method=RequestMethod.POST)
-	@ResponseBody
-	public AppResponse ajax(@Valid @RequestBody AppCommand command, BindingResult result) {
+	public @ResponseBody AppResponse ajax(@Valid @RequestBody AppCommand command, BindingResult result) {
 		
 		AppResponse response = new AppResponse();
 		
