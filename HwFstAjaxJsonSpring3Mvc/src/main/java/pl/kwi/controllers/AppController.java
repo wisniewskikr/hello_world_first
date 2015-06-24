@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,15 +53,15 @@ public class AppController{
 	 */
 	@RequestMapping(value="/ajax", method=RequestMethod.POST)
 	@ResponseBody
-	public AppResponse ajax(@RequestBody AppCommand command) {
+	public AppResponse ajax(@Valid @RequestBody AppCommand command, BindingResult result) {
 		
 		AppResponse response = new AppResponse();
 		
-//		if(result.hasErrors()) {
-//			response.setStatus("FAIL");
-//			response.setMessage(result.getAllErrors().get(0).getDefaultMessage());
-//			return response;
-//		}
+		if(result.hasErrors()) {
+			response.setStatus("FAIL");
+			response.setMessage(result.getAllErrors().get(0).getDefaultMessage());
+			return response;
+		}
 		
 		response.setStatus("SUCCESS");
 		response.setName(command.getName());
