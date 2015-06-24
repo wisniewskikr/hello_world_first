@@ -168,6 +168,7 @@
 			<version>1.9.13</version>
 		</dependency>
 		
+		<!-- Jackson databind -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-core</artifactId>
