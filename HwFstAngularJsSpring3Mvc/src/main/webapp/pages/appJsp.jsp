@@ -4,7 +4,7 @@
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form"%>	
 
-<html ng-app="myApp" ng-controller="myAppCtrl">
+<html ng-app="myApp" ng-controller="myCtrl">
 
 
 <head>
@@ -21,7 +21,7 @@
 	
 		var app = angular.module('myApp', []);
 		
-		app.controller('myAppCtrl', function($scope, $http) {
+		app.controller('myCtrl', function($scope, $http) {
 			
 			$scope.inputContent = true;
 			$scope.outputContent = false;
@@ -43,12 +43,12 @@
 		        	if(response.status == "SUCCESS") {
 		        		$scope.inputContent = false;
 		    			$scope.outputContent = true;
-				    	$("#result").text(response.name);
-				    	$("#errors").text("");
+		    			$scope.result = response.name;
+		    			$scope.errors = "";
 		        	}
 		        	
 		        	if(response.status == "FAIL") {
-		        		$("#errors").text(response.message);
+		        		$scope.errors = response.message;
 		        	}
 		            
 		        });
@@ -79,7 +79,7 @@
 			<div id="subtitle" class="subtitle"><h3>Page: <b>Input</b></h3></div>
 			<div id="content" class="content">
 				<div class="contentElement">
-					<div class="text">Name * <span id="errors" class="error" ng-model="errors"></span> </div>
+					<div class="text">Name * <span id="errors" class="error" ng-bind="errors"></span> </div>
 					<div class="input"><input type="text" id="name" name="name" value="${name}" ng-model="name"/></div>
 					<div class="description">Type your name here</div>
 				</div>
@@ -94,7 +94,7 @@
 			<div id="content" class="content">
 				<div class="contentElement">
 					<div>&nbsp;</div>
-					<div id="name" class="text"> Hello World <b><span id="result" ng-model="result"></span></b> </div>
+					<div id="name" class="text"> Hello World <b><span id="result" ng-bind="result"></span></b> </div>
 					<div class="image"><img id="duke" alt="duke" src="images/duke.jpg"></div>
 				</div>
 				
