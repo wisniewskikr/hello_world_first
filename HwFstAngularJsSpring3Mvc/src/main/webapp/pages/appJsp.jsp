@@ -4,7 +4,7 @@
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form"%>	
 
-<html ng-app="myApp" ng-controller="customersCtrl">
+<html ng-app="myApp" ng-controller="myAppCtrl">
 
 
 <head>
@@ -19,21 +19,17 @@
 	
 	<script type="text/javascript">
 	
-		$(document).ready(function() {
-	 
-			$("#outputContent").hide();
-			$("#inputContent").show();
-			
-		});	
-	
 		var app = angular.module('myApp', []);
 		
-		app.controller('customersCtrl', function($scope, $http) {
+		app.controller('myAppCtrl', function($scope, $http) {
+			
+			$scope.inputContent = true;
+			$scope.outputContent = false;
 			
 			$scope.send = function() {
 				
 				var json = {
-						name: $scope.name					
+					name: $scope.name					
 				};
 				
 				var httpRequest = $http({
@@ -45,8 +41,8 @@
 				httpRequest.success(function(response, status) {
 		            
 		        	if(response.status == "SUCCESS") {
-		        		$("#inputContent").hide();
-				    	$("#outputContent").show();
+		        		$scope.inputContent = false;
+		    			$scope.outputContent = true;
 				    	$("#result").text(response.name);
 				    	$("#errors").text("");
 		        	}
@@ -60,8 +56,8 @@
 			};
 			
 			$scope.back = function() {
-				$("#outputContent").hide();
-			 	$("#inputContent").show();
+				$scope.inputContent = true;
+				$scope.outputContent = false;
 				$scope.name = "";
 			};
 			
@@ -79,7 +75,7 @@
 	<div class="page">
 		<div id="title" class="title"><h2>Hello World</h2></div>
 		
-		<div id="inputContent">
+		<div id="inputContent" ng-show="inputContent">
 			<div id="subtitle" class="subtitle"><h3>Page: <b>Input</b></h3></div>
 			<div id="content" class="content">
 				<div class="contentElement">
@@ -93,7 +89,7 @@
 			</div>
 		</div>
 		
-		<div id="outputContent">
+		<div id="outputContent" ng-show="outputContent">
 			<div id="subtitle" class="subtitle"><h3>Page: <b>Output</b></h3></div>
 			<div id="content" class="content">
 				<div class="contentElement">
