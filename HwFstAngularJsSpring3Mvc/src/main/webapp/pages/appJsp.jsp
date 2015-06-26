@@ -13,59 +13,12 @@
 	<link type="text/css" rel="stylesheet" href="css/style.css">
 	<link type="text/css" rel="stylesheet" href="css/jquery-ui-1.10.3/smoothness/jquery-ui-1.10.3.custom.css">
 	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
-	<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
-	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>	
 	<script type="text/javascript" src="js/script.js"></script>
-	
-	<script type="text/javascript">
-	
-		var app = angular.module('myApp', []);
-		
-		app.controller('myCtrl', function($scope, $http) {
-			
-			$scope.inputContent = true;
-			$scope.outputContent = false;
-			
-			$scope.send = function() {
-				
-				var json = {
-					name: $scope.name					
-				};
-				
-				var httpRequest = $http({
-					method: 'POST',
-		            url: 'app/ajax',
-		            data: JSON.stringify(json)
-				});
-				
-				httpRequest.success(function(response, status) {
-		            
-		        	if(response.status == "SUCCESS") {
-		        		$scope.inputContent = false;
-		    			$scope.outputContent = true;
-		    			$scope.result = response.name;
-		    			$scope.errors = "";
-		        	}
-		        	
-		        	if(response.status == "FAIL") {
-		        		$scope.errors = response.message;
-		        	}
-		            
-		        });
-				
-			};
-			
-			$scope.back = function() {
-				$scope.inputContent = true;
-				$scope.outputContent = false;
-				$scope.name = "";
-			};
-			
-		});
-	
-	
-	</script>
-		
+	<!-- AngularJs files -->
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/myApp.js"></script>
+	<script type="text/javascript" src="js/myCtrl.js"></script>		
 </head>
 
 
