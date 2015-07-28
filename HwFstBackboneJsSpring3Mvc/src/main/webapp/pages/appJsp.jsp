@@ -11,8 +11,14 @@
 	<title>Hello World</title>
 	<base href="${pageContext.request.contextPath}/">
 	<link type="text/css" rel="stylesheet" href="css/style.css">
-	<link type="text/css" rel="stylesheet" href="css/jquery-ui-1.10.3/smoothness/jquery-ui-1.10.3.custom.css">
-	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/jquery-ui-1.10.3/smoothness/jquery-ui-1.10.3.custom.css">	
+		
+	<!-- BackboneJs scripts -->
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/underscore-min-1.8.3.js"></script>
+	<script type="text/javascript" src="js/backbone-min-1.2.1.js"></script>
+	
+	<!-- Other scripts -->
 	<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>	
 </head>
