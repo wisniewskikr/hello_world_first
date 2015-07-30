@@ -88,7 +88,17 @@
 
       render: function(){
         this.$el.html(this.template());
+      },
+      
+      events: {
+          'click #ok': 'okAction'
+      },
+      
+      okAction: function(e){
+    	  var name = this.$('#name').val();
+    	  alert("name: " + name);
       }
+      
     });
 
     var appView = new AppView();
