@@ -74,6 +74,11 @@
 	    evaluate: /\{\{(.+?)\}\}/gim,
 	    escape: /\{\{\-(.+?)\}\}/gim
 	};
+	
+  	// App Model
+	var AppModel = Backbone.Model.extend({
+	    urlRoot: 'app/ajax'
+	});
   
     // Input View
 	var InputView = Backbone.View.extend({
@@ -94,7 +99,11 @@
           'click #ok': 'okAction'
       },
       
-      okAction: function(e){    	  
+      okAction: function(e){ 
+    	  var name = this.$('#name').val();
+    	  var appModel = new AppModel({ name: name });
+    	  appModel.save();
+    	  
     	  var outputView = new OutputView();
     	  this.$el.html(outputView.render());
       }
