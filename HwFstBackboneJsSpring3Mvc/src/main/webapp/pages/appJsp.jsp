@@ -75,8 +75,8 @@
 	    escape: /\{\{\-(.+?)\}\}/gim
 	};
   
-    // View
-	var AppView = Backbone.View.extend({
+    // Input View
+	var InputView = Backbone.View.extend({
     	
       el: '#container',
       
@@ -94,14 +94,40 @@
           'click #ok': 'okAction'
       },
       
-      okAction: function(e){
-    	  var name = this.$('#name').val();
-    	  alert("name: " + name);
+      okAction: function(e){    	  
+    	  var outputView = new OutputView();
+    	  this.$el.html(outputView.render());
+      }
+      
+    });
+    
+    // Output View
+	var OutputView = Backbone.View.extend({
+    	
+      el: '#container',
+      
+      template: _.template($('#outputContent').html()),
+
+      initialize: function(){
+        this.render();
+      },
+
+      render: function(){
+        this.$el.html(this.template());
+      },
+      
+      events: {
+          'click #back': 'backAction'
+      },
+      
+      backAction: function(e){
+    	  var inputView = new InputView();
+    	  this.$el.html(inputView.render());
       }
       
     });
 
-    var appView = new AppView();
+    var inputView = new InputView();
   </script>
 
 </body>
