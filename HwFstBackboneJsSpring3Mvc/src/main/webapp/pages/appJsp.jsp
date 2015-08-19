@@ -102,10 +102,20 @@
       okAction: function(e){ 
     	  var name = this.$('#name').val();
     	  var appModel = new AppModel({ name: name });
-    	  appModel.save();
-    	  
-    	  var outputView = new OutputView();
-    	  this.$el.html(outputView.render());
+    	  appModel.save({}, {
+    		  success :function(model, response) {
+    			  
+    			  if(response.status == "SUCCESS") {
+    				  var outputView = new OutputView();
+    		    	  this.$el.html(outputView.render());
+    			  }
+    			  
+    			  if(response.status == "FAIL") {    				 
+    				  this.$('#errors').text(response.message);
+    			  }
+    			  
+  	    	}
+    	  });    	     	  
       }
       
     });
