@@ -106,7 +106,7 @@
     		  success :function(model, response) {
     			  
     			  if(response.status == "SUCCESS") {
-    				  var outputView = new OutputView();
+    				  var outputView = new OutputView(name);
     		    	  this.$el.html(outputView.render());
     			  }
     			  
@@ -123,16 +123,20 @@
     // Output View
 	var OutputView = Backbone.View.extend({
     	
-      el: '#container',
+      name: null,
+		
+	  el: '#container',
       
       template: _.template($('#outputContent').html()),
 
-      initialize: function(){
+      initialize: function(name){
+    	this.name = name;  
         this.render();
       },
 
       render: function(){
-        this.$el.html(this.template());
+        this.$el.html(this.template()); 
+        this.$('#result').text(this.name);
       },
       
       events: {
