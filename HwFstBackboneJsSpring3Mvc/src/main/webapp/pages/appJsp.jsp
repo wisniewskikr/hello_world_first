@@ -14,8 +14,7 @@
 	<link type="text/css" rel="stylesheet" href="css/jquery-ui-1.10.3/smoothness/jquery-ui-1.10.3.custom.css">	
 	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
-	<!-- script type="text/javascript" src="js/script.js"></script -->	
-	<!-- Backbone scripts -->
+	<!-- Backbone common scripts -->
 	<script type="text/javascript" src="js/underscore-min-1.8.3.js"></script>
   	<script type="text/javascript" src="js/backbone-min-1.2.1.js"></script> 
 </head>
@@ -60,98 +59,12 @@
 	<div id="buttons" class="buttons">
 		<input type="button" id="back" name="back" value="Back" title="Go back to previous page"/>
 	</div>
-</script> 
+</script>
 
-  <!-- =============== -->
-  <!-- Javascript code -->
-  <!-- =============== -->
-  <script type="text/javascript">
-  
-	// Add this to avoid JSP marks in backbone template
-	// and compilation errors
-  _.templateSettings = {
-	    interpolate: /\{\{(.+?)\}\}/gim,
-	    evaluate: /\{\{(.+?)\}\}/gim,
-	    escape: /\{\{\-(.+?)\}\}/gim
-	};
-	
-  	// App Model
-	var AppModel = Backbone.Model.extend({
-	    urlRoot: 'app/ajax'
-	});
-  
-    // Input View
-	var InputView = Backbone.View.extend({
-    	
-      el: '#container',
-      
-      template: _.template($('#inputContent').html()),
-
-      initialize: function(){
-        this.render();
-      },
-
-      render: function(){
-        this.$el.html(this.template());
-      },
-      
-      events: {
-          'click #ok': 'okAction'
-      },
-      
-      okAction: function(e){ 
-    	  var name = this.$('#name').val();
-    	  var appModel = new AppModel({ name: name });
-    	  appModel.save({}, {
-    		  success :function(model, response) {
-    			  
-    			  if(response.status == "SUCCESS") {
-    				  var outputView = new OutputView(name);
-    		    	  this.$el.html(outputView.render());
-    			  }
-    			  
-    			  if(response.status == "FAIL") {    				 
-    				  this.$('#errors').text(response.message);
-    			  }
-    			  
-  	    	}
-    	  });    	     	  
-      }
-      
-    });
-    
-    // Output View
-	var OutputView = Backbone.View.extend({
-    	
-      name: null,
-		
-	  el: '#container',
-      
-      template: _.template($('#outputContent').html()),
-
-      initialize: function(name){
-    	this.name = name;  
-        this.render();
-      },
-
-      render: function(){
-        this.$el.html(this.template()); 
-        this.$('#result').text(this.name);
-      },
-      
-      events: {
-          'click #back': 'backAction'
-      },
-      
-      backAction: function(e){
-    	  var inputView = new InputView();
-    	  this.$el.html(inputView.render());
-      }
-      
-    });
-
-    var inputView = new InputView();
-  </script>
+<!-- Backbone specific scripts -->
+<script type="text/javascript" src="js/app-backbone-input.js"></script>
+<script type="text/javascript" src="js/app-backbone-output.js"></script>
+<script type="text/javascript" src="js/app-backbone-start.js"></script>
 
 </body>
 
