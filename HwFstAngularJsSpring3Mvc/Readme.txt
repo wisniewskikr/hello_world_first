@@ -1,8 +1,9 @@
 DESCRIPTION
 ===========
 
-This is example project with usage framework AngularJs with framework Spring 3 MVC. Json object is sent as
-request and as response. 
+This is example project with usage framework AngularJs with framework Spring 3 MVC. 
+AngularJs is one of the java script frameworks (like BackboneJs or Ember) which can be used to create web application.
+Here json object is sent as request and as response. 
 To use AngularJs you have to:
 - add js file with AngularJs:
 <script type="text/javascript" src="js/angular.min.js"></script>
